@@ -120,6 +120,37 @@ app.get('/statement/date', verifyIfExistsAccountCpf, (request, response) => {
   return response.json(statement)
 })
 
+app.put('/account', verifyIfExistsAccountCpf, (request, response) => {
+  const { name } = request.body
+  const { customer } = request
+
+  customer.name = name
+
+  return response.status(201).json(customer)
+})
+
+app.get('/account', verifyIfExistsAccountCpf, (request, response) => {
+  const { customer } = request
+
+  return response.json(customer)
+})
+
+app.delete('/account', verifyIfExistsAccountCpf, (request, response) => {
+  const { customer } = request
+
+  customers.splice(customer, 1)
+
+  return response.status(200).json(customers)
+})
+
+app.get('/balance', verifyIfExistsAccountCpf, (request, response) => {
+  const { customer } = request
+
+  const balance = getBalance(customer.statement)
+
+  return response.json({ total: balance })
+})
+
 app.listen(3333)
 
 console.log('rodou liso')
